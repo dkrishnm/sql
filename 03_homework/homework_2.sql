@@ -57,4 +57,9 @@ from product;
 /* 1. Write a query that INNER JOINs the vendor table to the vendor_booth_assignments table on the 
 vendor_id field they both have in common, and sorts the result by vendor_name, then market_date. */
 
+select v.vendor_id , vendor_name, vendor_type, vendor_owner_first_name, vendor_owner_last_name, booth_number, market_date
+from vendor v  join vendor_booth_assignments  vb on  v.vendor_id = vb.vendor_id order by vendor_name asc , market_date asc
+
+
+
 
