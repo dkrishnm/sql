@@ -9,7 +9,13 @@ Think a bit about the row counts: how many distinct vendors, product names are t
 How many customers are there (y). 
 Before your final group by you should have the product of those two queries (x*y).  */
 
-
+with sum_price as 
+(select sum(original_price) as totalvalue , product_id, vendor_id from (
+SELECT DISTINCT(product_id), vendor_id, original_price, customer_first_name, customer_id
+FROM vendor_inventory  cross join customer) group by product_id, vendor_id) 
+select p.product_name, v.vendor_name, sum_price.totalvalue  from sum_price 
+inner join product p on p.product_id = sum_price.product_id
+inner join vendor v on v.vendor_id = sum_price.vendor_id
 
 -- INSERT
 /*1.  Create a new table "product_units". 
