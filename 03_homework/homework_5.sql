@@ -10,7 +10,7 @@ How many customers are there (y).
 Before your final group by you should have the product of those two queries (x*y).  */
 
 with sum_price as 
-(select sum(original_price) as totalvalue , product_id, vendor_id from (
+(select sum(original_price*5) as totalvalue , product_id, vendor_id from (
 SELECT DISTINCT(product_id), vendor_id, original_price, customer_first_name, customer_id
 FROM vendor_inventory  cross join customer) group by product_id, vendor_id) 
 select p.product_name, v.vendor_name, sum_price.totalvalue  from sum_price 
@@ -67,3 +67,22 @@ Finally, make sure you have a WHERE statement to update the right row,
 When you have all of these components, you can run the update statement. */
 
 
+WITH inventory AS (
+    SELECT product_id, SUM(quantity) AS i_qty
+    FROM vendor_inventory
+    GROUP BY product_id
+),
+bought AS (
+    SELECT product_id, SUM(quantity) AS b_qty
+    FROM customer_purchases
+    GROUP BY product_id
+),
+prodcurrqty AS (
+SELECT inventory.product_id, (inventory.i_qty - COALESCE(bought.b_qty, 0)) AS difference
+FROM inventory
+LEFT JOIN bought ON inventory.product_id = bought.product_id
+)
+update product_units as pu 
+set current_quantity = pcq.difference
+from prodcurrqty pcq
+where pcq.product_id = pu.product_id;
