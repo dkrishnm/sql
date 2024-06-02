@@ -61,8 +61,15 @@ Type 2: When the customer history is stored, there should be control on who has 
 Review the AdventureWorks Schema [here](https://i.stack.imgur.com/LMu4W.gif)
 
 Highlight at least two differences between it and your ERD. Would you change anything in yours?
+
 ```
-Your answer...
+These are a few changes I would like to incorporate in my design
+
+1) Creating seperate tables for person email address, phone number ( phone number types)
+2) Address Type is created as a separate entity
+3) Shipping details is captured
+4) Sales order captures the credit card information
+
 ```
 
 # Criteria
