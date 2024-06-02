@@ -15,15 +15,61 @@ _Hint, search type 1 vs type 2 slowly changing dimensions._
 
 Bonus: Are there privacy implications to this, why or why not?
 ```
-Your answer...
+**Architecture 1 (Type 1 slowly changing dimension)**
+
+1) Create a table CustomerAddress
+   
+   AddressId  (INT) -- PK
+   CustomerID (INT)  -- Foreign Key with customer table
+   AddressLine1 (VARCHAR(255)).
+   AddressLine2 (VARCHAR(255)) (Optional).
+   City (VARCHAR(255)).
+   State (VARCHAR(50)).
+   ZipCode (VARCHAR(20)).
+
+2) One to one relationship with customer table and address table
+
+ Update the same table entry with every address change ( stores only the recent address)
+
+**Architecture 2 (Type 2 slowly changing dimension)**
+
+1) Create a table CustomerAddress
+   
+   AddressId  (INT) -- PK
+   CustomerID (INT)  -- Foreign Key with customer table
+   AddressLine1 (VARCHAR(255)).
+   AddressLine2 (VARCHAR(255)) (Optional).
+   City (VARCHAR(255)).
+   State (VARCHAR(50)).
+   ZipCode (VARCHAR(20))
+   StartDate ( Date) NOT NULL
+   EndDate(Date) -- Nullable
+2) One to many relationship with customer and address table
+3) EndDate is absent for the most recent address
+4) All the historical addresses are stored in the database
+
+Type 1: This approach is less privacy invasive that we are not storing the history of the user. But there is potentinal risk of losing customer behavior patterns
+
+Type 2: When the customer history is stored, there should be control on who has access to the data of each customer. There should be consent received before sharing this information.
+
+
+
+
 ```
 
 ## Question 4
 Review the AdventureWorks Schema [here](https://i.stack.imgur.com/LMu4W.gif)
 
 Highlight at least two differences between it and your ERD. Would you change anything in yours?
+
 ```
-Your answer...
+These are a few changes I would like to incorporate in my design
+
+1) Creating seperate tables for person email address, phone number ( phone number types)
+2) Address Type is created as a separate entity
+3) Shipping details is captured
+4) Sales order captures the credit card information
+
 ```
 
 # Criteria
